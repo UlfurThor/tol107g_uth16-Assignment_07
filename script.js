@@ -17,7 +17,7 @@ function start() {
     txt = "You pressed OK!";
     play(GAMES_TO_PLAY);
   } else {
-    alert("bye");
+    alert("Bye");
   }
 }
 
@@ -34,10 +34,12 @@ function start() {
  */
 var score = 0;
 var time = 0;
+var prevMess;
 
 function play(count) {
   score = 0;
   time = new Date();
+  prevMess = "";
   for (let i = 0; i < count; i++) {
     ask();
   }
@@ -46,12 +48,14 @@ function play(count) {
   time = Math.round(time);
   time /= 100;
   console.log(time);
+  var ave = (time / count) * 100;
+  ave = Math.round(ave) / 100;
   alert(
-      "You played "+count+" rounds\n" +
-      "You scored "+score+" correct\n" +
-      "This took "+time+" seconds\n" +
-      "You took an average of "+time/count +" seconds per question" );
-    start();
+    "You played " + count + " rounds\n" +
+    "You scored " + score + " correct\n" +
+    "This took " + time + " seconds\n" +
+    "You took an average of " + ave + " seconds per question");
+  start();
 }
 
 /**
@@ -100,16 +104,18 @@ function ask() {
     default:
       break;
   }
-  var ans = prompt(q, 0);
+  var ans = prompt(prevMess + q, 0);
 
   if (ans === null || ans === "") {
-    console.log("Question skipped");
+    prevMess = "Question skipped";
   } else if (ans === "" + c) {
-    console.log(ans + " is correct");
+    prevMess = ans + " is correct";
     score++;
   } else {
-    console.log(ans + " is WRONG - the right answer is " + c);
+    prevMess = ans + " is WRONG - the right answer is " + c;
   }
+  console.log(prevMess);
+  prevMess = prevMess + "\n";
 
 }
 
